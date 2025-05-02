@@ -140,18 +140,6 @@
     </ClCompile>
     <ClCompile Include="snake.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\resources\blim.flac">
-      <DeploymentContent>false</DeploymentContent>
-    </None>
-    <None Include="..\..\resources\foo.ogg" />
-    <None Include="..\..\resources\foo16bit.flac" />
-    <None Include="..\..\resources\foo24bit.flac" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="..\..\resources\foo.mp3" />
-    <Media Include="..\..\resources\foo.wav" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

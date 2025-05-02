@@ -25,26 +25,4 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\resources\blim.flac">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\..\resources\foo.ogg">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\..\resources\foo16bit.flac">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\..\resources\foo24bit.flac">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="..\..\resources\foo.mp3">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="..\..\resources\foo.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-  </ItemGroup>
 </Project>
