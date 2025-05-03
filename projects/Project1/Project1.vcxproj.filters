@@ -14,13 +14,16 @@
     <ClCompile Include="00-basic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sound.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soundplayer.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="image.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
