@@ -1,17 +1,24 @@
+import soundplayer;
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <SDL3/SDL_init.h>
 #include <SDL_mixer.h>
+
+
+
 
 /* We will use this renderer to draw into this window every frame. */
 static SDL_Window* window = NULL;
 static SDL_Renderer* renderer = NULL;
-static Mix_Chunk* sound = NULL;
+//static Mix_Chunk* sound = NULL;
 static bool play = false;
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
+    SDL_SetLogPriorities(SDL_LogPriority::SDL_LOG_PRIORITY_VERBOSE); 
+
     SDL_SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear");
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -24,22 +31,13 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
-    if (!Mix_OpenAudio(0, NULL)) {
-        SDL_Log("Couldn't open audio: %s\n", SDL_GetError());
+    if (!Sound::init()) {       
         return SDL_APP_FAILURE;
     }
-
-    int numChannels = Mix_AllocateChannels(16);
-    SDL_Log("Num channels: %d", numChannels);
-
-    char* path = NULL;
-    SDL_asprintf(&path, "%sblim.flac", SDL_GetBasePath());
-    sound = Mix_LoadWAV(path);
-    if (sound == NULL) {
-        SDL_Log("Couldn't load %s: %s\n", path, SDL_GetError());
+    
+    if (!Sound::load("foo")) {      
         return SDL_APP_FAILURE;
     }
-    SDL_free(path);
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
@@ -73,9 +71,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     /* put the newly-cleared rendering on the screen. */
     SDL_RenderPresent(renderer);
 
-    if (play) {
-        int result = Mix_PlayChannel(-1, sound, 0);
-        SDL_Log("Mix_PlayChannel=%d", result);
+    if (play) {       
+        Sound::play("foo");
         play = false;
     }
 
@@ -85,11 +82,12 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 /* This function runs once at shutdown. */
 void SDL_AppQuit(void* appstate, SDL_AppResult result)
 {
-    Mix_CloseAudio();
+   
 
-    if (sound) {
-        Mix_FreeChunk(sound);
-    }
+    Sound::free();
     /* SDL will clean up the window/renderer for us. */
+
+    SDL_Quit();
+    
 }
 
