@@ -91,10 +91,16 @@ static void state_gameplay(Game* game) {
         render( state );
     }
 	*/
+
+	///////////////////////////////////////////
+	//   PHYSICS 
+	///////////////////////////////////////////
 	game->accumulator += game->elapsed;
 
 	while(game->accumulator >= game->dt)
 	{
+		game->accumulator -= game->dt;
+
 		// Store the previous x position
 		float original_x = ball->x;
 
@@ -177,9 +183,7 @@ static void state_gameplay(Game* game) {
 			// TODO Sound effect
 			/*	game.play_sound("bounce", 5)
 			game.play_sound("bounce_synth", 1)*/
-		}
-
-		game->accumulator -= game->dt;
+		}		
 	}
 
 	/////////////////////////////////////

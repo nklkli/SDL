@@ -11,7 +11,7 @@
 /* We will use this renderer to draw into this window every frame. */
 static SDL_Window* window = NULL;
 static SDL_Renderer* renderer = NULL;
-static Uint64 lastTicks = 0;
+static Uint64 lastTime = 0;
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
@@ -72,8 +72,8 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
 	Game* game = (Game*)appstate;
 
-	Uint64 ticks = SDL_GetTicks();
-	game->elapsed = (ticks-lastTicks) / 1000.f;
+	Uint64 currentTime = SDL_GetTicks();
+	game->elapsed = (currentTime-lastTime) / 1000.f;
 	game_on_update(game);
 
 	
@@ -81,7 +81,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 		"Elapsed: %f, %" SDL_PRIu64 "; last: %" SDL_PRIu64, 
 		game->elapsed, ticks, lastTicks);*/
 
-	lastTicks = ticks;
+	lastTime = currentTime;
 
 	/* put the newly-cleared rendering on the screen. */
 	SDL_RenderPresent(renderer);

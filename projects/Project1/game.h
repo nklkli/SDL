@@ -31,8 +31,11 @@ struct Game {
 	Paddle humanPaddle;
 	Paddle computerPaddle;
 	Ball ball;
+	// Seconds elapsed between current and last frame.
 	float elapsed = 0;
+	// Fixed delta time (in seconds) for physics simulation
 	const float dt = 1 / 120.f;
+	// For physics simulation
 	float accumulator = 0;
 };
 
