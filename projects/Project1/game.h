@@ -32,6 +32,8 @@ struct Game {
 	Paddle computerPaddle;
 	Ball ball;
 	float elapsed = 0;
+	const float dt = 1 / 120.f;
+	float accumulator = 0;
 };
 
 

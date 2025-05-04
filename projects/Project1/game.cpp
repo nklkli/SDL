@@ -29,7 +29,7 @@ static void state_init(Game* game) {
 	game->ball.y = (float)game->PLAYFIELD_HALF_HEIGHT;
 	game->ball.dx = -1;
 	game->ball.dy = 0;
-	game->ball.speed = 5;
+	game->ball.speed = game->PLAYFIELD_HALF_WIDTH/1.5f;
 	game->ball.image = "ball.png";
 	game->ball.w = game->ball.h = 24;
 
@@ -41,6 +41,8 @@ static void state_gameplay(Game* game) {
 	//		HUMAN PLAYER PADDLE
 	/////////////////////////////
 	Paddle* humanPaddle = &game->humanPaddle;
+	Paddle* computerPaddle = &game->computerPaddle;
+	Ball* ball = &game->ball;
 
 	if (humanPaddle->move_command == Paddle::MoveCommand::UP) {
 		humanPaddle->y += -humanPaddle->dy;
@@ -58,32 +60,47 @@ static void state_gameplay(Game* game) {
 	humanPaddle->move_command = Paddle::MoveCommand::NONE;
 	humanPaddle->command_play = false;
 
-	image_render(humanPaddle->image,
-		humanPaddle->x - humanPaddle->w / 2,
-		humanPaddle->y - humanPaddle->h / 2);
-
-
-	//////////////////////////////////
-	//		COMPUTER'S PLAYER PADDLE
-	/////////////////////////////////
-	Paddle* computerPaddle = &game->computerPaddle;
-	image_render(computerPaddle->image,
-		computerPaddle->x - computerPaddle->w / 2,
-		computerPaddle->y - computerPaddle->h / 2);
+	
 
 	///////////////////////////
 	//			BALL
 	//////////////////////////
-	Ball* ball = &game->ball;
-	for (size_t i = 0; i < ball->speed; i++)
+	
+	/* https://gafferongames.com/post/fix_your_timestep/
+	double t = 0.0;
+    const double dt = 0.01;
+
+    double currentTime = hires_time_in_seconds();
+    double accumulator = 0.0;
+
+    while ( !quit )
+    {
+        double newTime = hires_time_in_seconds();
+        double frameTime = newTime - currentTime;
+        currentTime = newTime;
+
+        accumulator += frameTime;
+
+        while ( accumulator >= dt )
+        {
+            integrate( state, t, dt );
+            accumulator -= dt;
+            t += dt;
+        }
+
+        render( state );
+    }
+	*/
+	game->accumulator += game->elapsed;
+
+	while(game->accumulator >= game->dt)
 	{
 		// Store the previous x position
 		float original_x = ball->x;
 
 		// Move the ball based on dx and dy
-		ball->x += ball->dx ;
-		ball->y += ball->dy ;
-		
+		ball->x += ball->dx * ball->speed * game->dt ;
+		ball->y += ball->dy * ball->speed * game->dt;		
 
 		int new_dir_x = 0;
 		Paddle* paddle = NULL;
@@ -148,7 +165,7 @@ static void state_gameplay(Game* game) {
 		
 		// Ball could collide with top or bottom wall of the playfield?
 		// The top and bottom of the arena are 220 pixels from the centre
-		if (SDL_abs(ball->y - (float)game->PLAYFIELD_HALF_HEIGHT) > 220) {
+		if (SDL_abs((int)ball->y - game->PLAYFIELD_HALF_HEIGHT) > 220) {
 			//Invert vertical direction and apply new dy to y so that the ball is no longer overlapping with the
 			// edge of the arena
 			ball->dy = -ball->dy;
@@ -162,7 +179,22 @@ static void state_gameplay(Game* game) {
 			game.play_sound("bounce_synth", 1)*/
 		}
 
+		game->accumulator -= game->dt;
 	}
+
+	/////////////////////////////////////
+	// RENDERING
+	////////////////////////////////////
+	
+	image_render(humanPaddle->image,
+		humanPaddle->x - humanPaddle->w / 2,
+		humanPaddle->y - humanPaddle->h / 2);
+
+
+	image_render(computerPaddle->image,
+		computerPaddle->x - computerPaddle->w / 2,
+		computerPaddle->y - computerPaddle->h / 2);
+
 	image_render(game->ball.image,
 		game->ball.x - game->ball.w / 2,
 		game->ball.y - game->ball.h / 2);
