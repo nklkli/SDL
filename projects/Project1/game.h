@@ -16,8 +16,8 @@ struct Paddle {
 };
 
 struct Ball {
-	int w, h;
-	float x,y, dx, dy, speed;
+	int w, h, speed;
+	float x,y, dx, dy;
 	const char* image;
 };
 

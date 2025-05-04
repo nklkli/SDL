@@ -29,7 +29,7 @@ static void state_init(Game* game) {
 	game->ball.y = (float)game->PLAYFIELD_HALF_HEIGHT;
 	game->ball.dx = -1;
 	game->ball.dy = 0;
-	game->ball.speed = game->PLAYFIELD_HALF_WIDTH / 2.f;
+	game->ball.speed = 5;
 	game->ball.image = "ball.png";
 	game->ball.w = game->ball.h = 24;
 
@@ -81,8 +81,9 @@ static void state_gameplay(Game* game) {
 		float original_x = ball->x;
 
 		// Move the ball based on dx and dy
-		ball->x += ball->dx * game->elapsed;
-		ball->y += ball->dy * game->elapsed;
+		ball->x += ball->dx ;
+		ball->y += ball->dy ;
+		
 
 		int new_dir_x = 0;
 		Paddle* paddle = NULL;
@@ -101,7 +102,7 @@ static void state_gameplay(Game* game) {
 
 			float difference_y = ball->y - paddle->y;
 
-			// Ball could collide with paddle on the y-axis?
+			//  Check to see if ball needs to bounce off a bat
 			if (difference_y > -64 and difference_y < 64) {
 				// Ball has collided with bat - calculate new direction vector
 				ball->dx = -ball->dx;
@@ -121,7 +122,7 @@ static void state_gameplay(Game* game) {
 				/*game.impacts.append(
 						Impact((self.x - new_dir_x * 10, self.y)))*/
 
-						// Increase speed with each hit
+				// Increase speed with each hit
 				ball->speed += 1;
 
 				// Add an offset to the AI player's target Y position, so it won't aim to hit the ball exactly

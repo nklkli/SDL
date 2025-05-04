@@ -34,6 +34,11 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 		return SDL_APP_FAILURE;
 	}
 
+	if (!SDL_SetRenderVSync(renderer, 1)) {
+		SDL_Log("Renderer sync failed: %s", SDL_GetError());
+		return SDL_APP_FAILURE;
+	}
+
 	if (!sound_init()) {
 		return SDL_APP_FAILURE;
 	}
