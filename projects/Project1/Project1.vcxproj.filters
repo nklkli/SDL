@@ -20,11 +20,28 @@
     <ClCompile Include="snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="soundplayer.ixx">
+    <ClCompile Include="sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="image.ixx">
+    <ClCompile Include="image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
