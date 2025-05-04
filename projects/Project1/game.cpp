@@ -121,7 +121,7 @@ static void state_gameplay(Game* game) {
 				/*game.impacts.append(
 						Impact((self.x - new_dir_x * 10, self.y)))*/
 
-				// Increase speed with each hit
+						// Increase speed with each hit
 				ball->speed += 1;
 
 				// Add an offset to the AI player's target Y position, so it won't aim to hit the ball exactly
@@ -144,20 +144,22 @@ static void state_gameplay(Game* game) {
 				game.play_sound("hit_veryfast", 1)*/
 			}
 		}
-			// The top and bottom of the arena are 220 pixels from the centre
-			if (SDL_abs(ball->y - (float)game->PLAYFIELD_HALF_HEIGHT) > 220) {
-				//Invert vertical direction and apply new dy to y so that the ball is no longer overlapping with the
-				// edge of the arena
-				ball->dy = -ball->dy;
-				ball->y += ball->dy;
+		
+		// Ball could collide with top or bottom wall of the playfield?
+		// The top and bottom of the arena are 220 pixels from the centre
+		if (SDL_abs(ball->y - (float)game->PLAYFIELD_HALF_HEIGHT) > 220) {
+			//Invert vertical direction and apply new dy to y so that the ball is no longer overlapping with the
+			// edge of the arena
+			ball->dy = -ball->dy;
+			ball->y += ball->dy;
 
-					// Create impact effect
-					// TODO game.impacts.append(Impact(self.pos))
+			// Create impact effect
+			// TODO game.impacts.append(Impact(self.pos))
 
 			// TODO Sound effect
-				/*	game.play_sound("bounce", 5)
-					game.play_sound("bounce_synth", 1)*/
-			}
+			/*	game.play_sound("bounce", 5)
+			game.play_sound("bounce_synth", 1)*/
+		}
 
 	}
 	image_render(game->ball.image,
