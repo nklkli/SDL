@@ -11,7 +11,9 @@
 /* We will use this renderer to draw into this window every frame. */
 static SDL_Window* window = NULL;
 static SDL_Renderer* renderer = NULL;
-static Uint64 lastTime = 0;
+
+
+
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
@@ -39,9 +41,9 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 		return SDL_APP_FAILURE;
 	}
 
-	if (!sound_init()) {
-		return SDL_APP_FAILURE;
-	}
+	if (!sound_init()) {		
+		//return SDL_APP_FAILURE;
+	}	
 
 	if (!image_init(renderer)) {
 		return SDL_APP_FAILURE;
@@ -58,7 +60,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 		return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
 	}
 		
-	game_on_event((Game*)appstate, event);
+	game_on_event(*static_cast<Game*>(appstate), *event);
 
 	return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
@@ -66,26 +68,30 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
+	static Uint64 lastTime=0;
+	static float lag=0;
+
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);  
 	SDL_RenderClear(renderer);  /* start with a blank canvas. */
 		
-
 	Game* game = (Game*)appstate;
 
 	Uint64 currentTime = SDL_GetTicks();
-	game->elapsed = (currentTime-lastTime) / 1000.f;
-	game_on_update(game);
+	Uint64 elapsed = currentTime - lastTime;
+	lag += elapsed/1000.f;
 
-	
-	/*SDL_RenderDebugTextFormat(renderer, 10,10, 
-		"Elapsed: %f, %" SDL_PRIu64 "; last: %" SDL_PRIu64, 
-		game->elapsed, ticks, lastTicks);*/
+	while (lag >= Game::UPDATE_STEP)
+	{
+		lag -= Game::UPDATE_STEP;
+		game_on_update(*game);
+	}
+
+	game_on_draw(*game, lag / Game::UPDATE_STEP);
 
 	lastTime = currentTime;
 
 	/* put the newly-cleared rendering on the screen. */
-	SDL_RenderPresent(renderer);
-	
+	SDL_RenderPresent(renderer);	
 
 	return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
@@ -93,7 +99,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 /* This function runs once at shutdown. */
 void SDL_AppQuit(void* appstate, SDL_AppResult result)
 {
-	free((Game*)appstate);
+	delete (Game*)appstate;
 	sound_free();
 	image_free();
 
