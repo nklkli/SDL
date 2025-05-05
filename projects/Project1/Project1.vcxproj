@@ -116,8 +116,8 @@
       <AdditionalDependencies>SDL3.lib;SDL3_mixer.lib;SDL3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(ProjectDir)media $(OutputPath)  /E /D 
-xcopy $(ProjectDir)..\..\dll\ $(OutputPath)  /E /D </Command>
+      <Command>xcopy $(ProjectDir)media $(OutputPath)  /E /D /Y
+xcopy $(ProjectDir)..\..\dll\ $(OutputPath)  /E /D /Y</Command>
       <Message>Copy DLLs and media files to output directory(where *.exe resides)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>

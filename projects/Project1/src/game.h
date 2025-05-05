@@ -2,6 +2,19 @@
 #include <SDL3/SDL_events.h>
 
 
+struct Position {
+	float x, y;
+};
+
+struct Velocity {	
+	float dx, dy, speed;
+};
+
+struct Moveable {
+	Position pos;
+	Velocity vel;
+};
+
 struct Paddle {
 	enum MoveCommand { NONE, DOWN, UP };
 
@@ -10,14 +23,17 @@ struct Paddle {
 
 	const char* image;
 	int w, h;
-	float x, y;
-	//The number of pixels the paddle moves vertically with each notch of the mouse scroll wheel.
-	float dy;
+
+	Moveable move;
+	
+	
+		
 };
 
 struct Ball {
-	int w, h, speed;
-	float x, y, dx, dy;
+	Moveable move;
+	
+	int w, h;	
 	const char* image;
 };
 

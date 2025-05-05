@@ -78,7 +78,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
 
 	Uint64 currentTime = SDL_GetTicks();
 	Uint64 elapsed = currentTime - lastTime;
-	lag += elapsed/1000.f;
+	lag += elapsed/1000.f; // milliseconds to seconds
 
 	while (lag >= Game::UPDATE_STEP)
 	{
